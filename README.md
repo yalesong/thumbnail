@@ -1,2 +1,2 @@
-# thumbnail
-Yahoo Screen video thumbnail dataset (CIKM 2016)
+# thumbnail_cikm2016
+A dataset of 1118 videos and their associated thumbnails collected from Yahoo Screen. The dataset can be used as a benchmark for automatic thumbnail extraction methods.
