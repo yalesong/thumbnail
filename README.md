@@ -1,5 +1,5 @@
 # Yahoo Screen video thumbnail dataset
-This repository contains the video thumbnail dataset used in our CIKM 2016 paper **"To Click or Not To Click: Automatic Selection of Beautiful Thumbnails from Videos."** 
+This repository contains the video thumbnail dataset used in our CIKM 2016 paper **"To Click or Not To Click: Automatic Selection of Beautiful Thumbnails from Videos"** ([arXiv link](https://arxiv.org/abs/1609.01388)).
 
 The code for extracthing video thumbnails is open sourced by Yahoo as part of the [Hecate library](https://github.com/yahoo/hecate).
 
