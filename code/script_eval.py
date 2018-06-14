@@ -6,6 +6,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# Smaller legend
+plt.rcParams.update({'legend.labelspacing': 0.0, 'legend.fontsize': 'small'})
 
 labels_dir = os.path.join('..', 'labels')
 results_dir = os.path.join('..', 'results')
@@ -120,7 +122,7 @@ if print_significance_test_results:
 
 ## Detailed results for paper
 generate_paper_results = True
-save_figure = False
+save_figure = True
 if generate_paper_results:
 	# 
 	# Table 1: Aggregated performance score. Set P@k=1,3,5,10, theta=0.005,
@@ -144,7 +146,7 @@ if generate_paper_results:
 				mark = '$^{\dagger}$'
 
 			if i == sort_idx[0,j]:
-				print('\\textbf{{{0:.4f}}}% '.format(PatK[i,j]), end='')
+				print('\\textbf{{{0:.4f}}} '.format(PatK[i,j]), end='')
 			elif i == sort_idx[1,j]:
 				print('\\underline{{{0:.4f}{1}}} '.format(PatK[i,j], mark), end='')
 			else:
@@ -161,7 +163,7 @@ if generate_paper_results:
 	# 
 	# Figure. Full spectrum of P@k
 	# 
-	fig1, ax1 = plt.subplots()
+	fig1, ax1 = plt.subplots(figsize=(7.4,6.8))
 	r = np.transpose(np.mean(precision_k[:,:,:,top_k-1], axis=0))
 	ax1_linestyle = ['-.','--','--','-.',':','-.','-','-']
 	ax1_linecolor = [[4, 15, 141], [10, 52, 245], [34, 175, 247], [78, 254, 192],\
@@ -180,10 +182,9 @@ if generate_paper_results:
 	ax1.set_ylabel('Mean Precision@k')
 	ax1.set_xlabel('SIFTflow dist threshold ($\\theta$)')
 	ax1.set_xlim(theta[0], theta[-1])
-	plt.get_current_fig_manager().window.setGeometry(800, 500, 740, 680)
 	
 	if save_figure:
-		plt.savefig(os.path.join(export_fig_path, 'prec_k_cikm2016.eps'), transparent=True, format='eps')
+		fig1.savefig(os.path.join(export_fig_path, 'prec_k_cikm2016.eps'), transparent=True, format='eps')
 
 	
 	# 
@@ -199,15 +200,14 @@ if generate_paper_results:
 						np.mean(precision_k[:, :, target_theta_idx, top_k-1], axis=0)])
 	
 	p_k_per_category_dataframe = pd.DataFrame(p_k_per_category, index=xtick_name, columns=model_names)
-	ax2 = p_k_per_category_dataframe.plot.bar(colormap='jet', rot=90, width=0.75)
-	
+	ax2 = p_k_per_category_dataframe.plot.bar(colormap='jet', rot=90, width=0.75, figsize=(16.8,3.3))
+	fig2 = ax2.get_figure()
 	ax2.set_xticklabels(p_k_per_category_dataframe.index, rotation=0)
 
-	plt.get_current_fig_manager().window.setGeometry(1, 549, 1680, 606)
 	ax2.set_xlim(-1, len(xtick_name))
 	ax2.set_ylim(0, 0.6)
 	ax2.set_title('Precision@K per channel (K=5, $\\theta$=0.005)')
-
+	
 	if save_figure:
-		plt.savefig(os.path.join(export_fig_path, 'prec_k_channel_cikm2016.eps'), transparent=True, format='eps')
+		fig2.savefig(os.path.join(export_fig_path, 'prec_k_channel_cikm2016.eps'), transparent=True, format='eps')
 
