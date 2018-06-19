@@ -75,7 +75,7 @@ if not os.path.exists(dest_folder):
 # Download videos from M3U8
 processes = []
 vids_to_process = list(viable_videos.iterrows())
-parallel_download_max = 12
+parallel_download_max = 24
 
 while len(vids_to_process) > 0:
 	i, row = vids_to_process.pop()
@@ -105,11 +105,31 @@ while len(vids_to_process_ffprobe) > 0:
 		ffprobe_processes.append(None)
 
 ffprobe_results = []
-for fp in ffprobe_processes:
+error = False
+corrupted_files = []
+for i, fp in enumerate(ffprobe_processes):
+	file_path = viable_videos.iloc[i].file_path
+	print('ffprobe check for:', file_path)
 	if fp is None:
 		ffprobe_results.append(None)
 	else:
-		ffprobe_results.append(float(fp.communicate()[0].decode('utf-8').strip()))
+		try:
+			ffprobe_result = fp.communicate()[0].decode('utf-8').strip()
+			ffprobe_results.append(float(ffprobe_result))
+		except Exception as e:
+			print(e)
+			print('Encountered error while checking ffprobe: the file is corrupted and will be deleted')
+			corrupted_files.append(file_path)
+			error = True
+			
+if error:
+	for fp in [x for x in ffprobe_processes if x is not None]:
+		fp.kill()
+	for cf in corrupted_files:
+		os.remove(cf)
+	print('Corrupted files have been cleaned: please restart the script')
+	raise Exception
+
 ffprobe_results = np.array(ffprobe_results)
 
 ffprobe_success = len([x for x in ffprobe_results if x is not None])
