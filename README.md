@@ -16,7 +16,7 @@ The directory `./labels` contains the label information, i.e., the location of a
 The directory `./code` and `./results` contain a MATLAB script and some prediction results for reproducing our results in the paper.
 
 ## Baseline Results
-You can reproduce the results in our CIKM 2016 paper by using the MATLAB script provided in `code/script_eval.m`. 
+You can reproduce the results in our CIKM 2016 paper by using the Python script provided in `code/script_eval.py` or the MATLAB script provided in `code/script_eval.m`. 
 
 In our experiments, we obtained the following mean precision @ k results:
 
